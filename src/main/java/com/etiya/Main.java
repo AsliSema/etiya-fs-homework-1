@@ -1,17 +1,22 @@
 package com.etiya;
 
+import com.etiya.oopWithNLayeredApp.business.ProductManager;
+import com.etiya.oopWithNLayeredApp.core.logging.DatabaseLogger;
+import com.etiya.oopWithNLayeredApp.core.logging.Logger;
+import com.etiya.oopWithNLayeredApp.core.logging.MailLogger;
+import com.etiya.oopWithNLayeredApp.dataAccess.HibernateProductDao;
+import com.etiya.oopWithNLayeredApp.dataAccess.JdbcProductDao;
+import com.etiya.oopWithNLayeredApp.entities.Product;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+    public static void main(String[] args) throws Exception {
+        Product product1 = new Product(1, "Iphone Xr", 10000);
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+        Logger[] loggers = {new DatabaseLogger(), new MailLogger()};
+
+        ProductManager productManager = new ProductManager(new HibernateProductDao(), loggers);
+        productManager.add(product1);
     }
 }
